@@ -1,4 +1,11 @@
 <?php
+// Restrict access to localhost
+$allowed_ips = ['127.0.0.1', '::1']; // Allow localhost (IPv4 and IPv6)
+if (!in_array($_SERVER['REMOTE_ADDR'], $allowed_ips)) {
+    die("Access denied");
+}
+
+
 // create_db.php
 
 // Enable error reporting
@@ -43,8 +50,8 @@ try {
     $result = $db->query('SELECT username, balance, secure_balance FROM users');
     echo "\nUsers:\n";
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        echo "Username: {$row['username']}, ".
-             "Balance: \${$row['balance']}, ".
+        echo "Username: {$row['username']}, " .
+             "Balance: \${$row['balance']}, " .
              "Secure Balance: \${$row['secure_balance']}\n";
     }
     
