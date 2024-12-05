@@ -1,5 +1,4 @@
-/* styles.css */
-
+/* Base styles */
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +6,7 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background-color: #f4f4f9;
   color: #333;
   line-height: 1.6;
@@ -28,128 +27,117 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Security specific styles */
-.warning-banner {
-  background-color: #ff9800;
-  color: white;
-  padding: 15px;
-  margin: 15px 0;
-  border-radius: 8px;
+/* Header styles */
+header {
   text-align: center;
-  animation: fadeIn 0.5s ease-in;
-  font-weight: 500;
+  margin-bottom: 30px;
 }
 
-.balance-container {
-  position: relative;
+header h1 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+/* Main content and form styles */
+.form-container {
+  background-color: #f8f9fa;
   padding: 20px;
-  background: #f8f9fa;
   border-radius: 8px;
   margin: 20px 0;
   border: 1px solid #e9ecef;
 }
 
-.balance {
-  font-size: 24px;
-  color: #28a745;
-  text-align: center;
-  font-weight: bold;
+.form-container h2 {
+  margin-bottom: 15px;
+  color: #2c3e50;
 }
 
-.balance-history {
-  font-size: 0.9em;
-  color: #666;
-  margin-top: 15px;
-  padding-top: 15px;
+.form-container ol {
+  padding-left: 20px;
+}
+
+.form-container li {
+  margin: 10px 0;
+}
+
+/* Alert styles */
+.error {
+  background-color: #fff3f3;
+  border: 1px solid #ffdddd;
+  color: #dc3545;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.success {
+  background-color: #f0fff4;
+  border: 1px solid #dcffe4;
+  color: #28a745;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+/* Grid layout for vulnerable/secure sections */
+.version-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+/* Link styles */
+a {
+  color: #007bff;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.attack-link {
+  display: inline-block;
+  background-color: #dc3545;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  margin: 15px 0;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+.attack-link:hover {
+  background-color: #c82333;
+  text-decoration: none;
+}
+
+/* Footer styles */
+footer {
+  margin-top: 40px;
+  padding-top: 20px;
   border-top: 1px solid #e9ecef;
   text-align: center;
+  color: #6c757d;
 }
 
-.transfer-form {
-  max-width: 400px;
-  margin: 20px auto;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+footer ul {
+  margin: 15px 0;
 }
 
-.security-badge {
-  display: inline-block;
-  padding: 4px 8px;
-  background: #28a745;
-  color: white;
-  border-radius: 4px;
-  font-size: 12px;
-  margin-left: 8px;
+footer li {
+  margin: 5px 0;
 }
 
-.transaction-history {
-  margin-top: 20px;
-  padding: 15px;
-  background: #fff;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
-}
-
-.transaction-item {
-  padding: 10px;
-  border-bottom: 1px solid #e9ecef;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.transaction-item:last-child {
-  border-bottom: none;
-}
-
-.transaction-amount {
-  font-weight: bold;
-}
-
-.transaction-amount.debit {
-  color: #dc3545;
-}
-
-.transaction-amount.credit {
-  color: #28a745;
-}
-
-.security-info {
-  margin-top: 20px;
-  padding: 15px;
-  background: #e9ecef;
-  border-radius: 8px;
-  font-size: 0.9em;
-  color: #666;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Form styles */
-.form-group {
-  margin-bottom: 20px;
-}
-
-label {
-  display: block;
-  margin-bottom: 8px;
-  color: #495057;
-  font-weight: 500;
-}
-
+/* Form input styles */
 input[type="number"],
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   width: 100%;
   padding: 12px;
   border: 1px solid #ced4da;
@@ -158,44 +146,35 @@ input[type="text"] {
   transition: border-color 0.3s ease;
 }
 
-input[type="number"]:focus,
-input[type="text"]:focus {
+input:focus {
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
 }
 
-button[type="submit"] {
+button {
   width: 100%;
-  padding: 14px;
+  padding: 12px 24px;
   background: #007bff;
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 16px;
-  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 
-button[type="submit"]:hover {
+button:hover {
   background: #0056b3;
 }
 
-/* Links */
-.links {
-  margin-top: 20px;
-  text-align: center;
-  padding-top: 20px;
-  border-top: 1px solid #e9ecef;
-}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
 
-.links a {
-  color: #007bff;
-  text-decoration: none;
-  margin: 0 10px;
-}
-
-.links a:hover {
-  text-decoration: underline;
+  .version-comparison {
+    grid-template-columns: 1fr;
+  }
 }

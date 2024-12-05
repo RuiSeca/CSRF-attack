@@ -4,24 +4,26 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Define database path constant
-define('DB_PATH', __DIR__ . '/DataBase/bank.db');
+// Start session at the beginning of the config file
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Database configuration
+define('DB_HOST', 'sql207.infinityfree.com');
+define('DB_NAME', 'if0_37845296_csrf');
+define('DB_USER', 'if0_37845296');
+define('DB_PASS', 'W2Kbll9jxdUh');
 
 // Function to establish and return a database connection
 function getDatabase() {
     try {
-        // Check if SQLite3 extension is enabled
-        if (!extension_loaded('sqlite3')) {
-            throw new Exception("SQLite3 extension is not enabled. Please enable it in your php.ini file.");
+        $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+        
+        if ($db->connect_error) {
+            throw new Exception("Connection failed: " . $db->connect_error);
         }
         
-        // Check if database exists
-        if (!file_exists(DB_PATH)) {
-            throw new Exception("Database file not found. Please run create_db.php to create the database first.");
-        }
-        
-        $db = new SQLite3(DB_PATH);
-        $db->enableExceptions(true);
         return $db;
     } catch (Exception $e) {
         die("Database connection failed: " . $e->getMessage());
@@ -31,7 +33,7 @@ function getDatabase() {
 // Function to get PDO connection (for some operations that need PDO)
 function getPDODatabase() {
     try {
-        $db = new PDO('sqlite:' . DB_PATH);
+        $db = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $db;
     } catch (PDOException $e) {

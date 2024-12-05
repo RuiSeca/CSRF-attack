@@ -16,41 +16,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $to_user = intval($_POST['to_user']);
     
     // Begin transaction
-    $db->exec('BEGIN TRANSACTION');
+    $db->begin_transaction();
     
     try {
         // Update sender's balance
-        $stmt = $db->prepare('UPDATE users SET balance = balance - :amount WHERE id = :user_id AND balance >= :amount');
-        $stmt->bindValue(':amount', $amount);
-        $stmt->bindValue(':user_id', $_SESSION['user_id']);
+        $stmt = $db->prepare('UPDATE users SET balance = balance - ? WHERE id = ? AND balance >= ?');
+        $stmt->bind_param('ddd', $amount, $_SESSION['user_id'], $amount);
         $stmt->execute();
         
         // Update receiver's balance
-        $stmt = $db->prepare('UPDATE users SET balance = balance + :amount WHERE id = :to_user');
-        $stmt->bindValue(':amount', $amount);
-        $stmt->bindValue(':to_user', $to_user);
+        $stmt = $db->prepare('UPDATE users SET balance = balance + ? WHERE id = ?');
+        $stmt->bind_param('dd', $amount, $to_user);
         $stmt->execute();
         
         // Record the transfer
-        $stmt = $db->prepare('INSERT INTO transfers (from_user, to_user, amount) VALUES (:from, :to, :amount)');
-        $stmt->bindValue(':from', $_SESSION['user_id']);
-        $stmt->bindValue(':to', $to_user);
-        $stmt->bindValue(':amount', $amount);
+        $stmt = $db->prepare('INSERT INTO transfers (from_user, to_user, amount) VALUES (?, ?, ?)');
+        $stmt->bind_param('iid', $_SESSION['user_id'], $to_user, $amount);
         $stmt->execute();
         
-        $db->exec('COMMIT');
+        $db->commit();
         $success = 'Transfer successful!';
     } catch (Exception $e) {
-        $db->exec('ROLLBACK');
+        $db->rollback();
         $error = 'Transfer failed: ' . $e->getMessage();
     }
 }
 
 // Get current balance
-$stmt = $db->prepare('SELECT balance FROM users WHERE id = :id');
-$stmt->bindValue(':id', $_SESSION['user_id']);
-$result = $stmt->execute();
-$balance = $result->fetchArray()['balance'];
+$stmt = $db->prepare('SELECT balance FROM users WHERE id = ?');
+$stmt->bind_param('i', $_SESSION['user_id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$balance = $result->fetch_assoc()['balance'];
 ?>
 
 <!DOCTYPE html>

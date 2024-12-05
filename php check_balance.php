@@ -3,12 +3,11 @@
 require_once 'config.php';
 
 try {
-    $db = new PDO('sqlite:' . DB_PATH);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $db = getDatabase(); // Using the MySQL connection from config.php
     
     $result = $db->query('SELECT username, balance FROM users');
     echo "Current balances:\n";
-    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $result->fetch_assoc()) {
         echo "{$row['username']}: \${$row['balance']}\n";
     }
     
@@ -22,7 +21,7 @@ try {
         LIMIT 5
     ');
     
-    while ($transfer = $transfers->fetch(PDO::FETCH_ASSOC)) {
+    while ($transfer = $transfers->fetch_assoc()) {
         echo "From {$transfer['from_user']} to {$transfer['to_user']}: \${$transfer['amount']}\n";
     }
 } catch (Exception $e) {
