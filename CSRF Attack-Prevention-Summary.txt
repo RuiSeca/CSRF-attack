@@ -1,0 +1,78 @@
+# CSRF Attack Prevention Summary
+
+## Countermeasures (2 Marks)
+1. **Synchronizer Token Pattern**
+   - Generate unique CSRF token per session
+   - Include token in hidden form field
+   - Validate token server-side before processing transfers
+
+2. **Double-Submit Cookie**
+   - Store token in both session and cookie
+   - Verify both tokens match before processing
+   - Prevent cross-origin requests
+
+## Implementation (3 Marks)
+
+### 1. CSRF Protection Class
+```php
+// csrf_protection.php
+class CSRFProtection {
+    public static function generateToken() {
+        if (empty($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+        return $_SESSION['csrf_token'];
+    }
+
+    public static function verifyToken($token) {
+        if (empty($_SESSION['csrf_token']) || empty($token)) {
+            return false;
+        }
+        return hash_equals($_SESSION['csrf_token'], $token);
+    }
+}
+```
+
+### 2. Secure Transfer Implementation
+```php
+// secure_transfer.php (key sections)
+session_start();
+require_once 'csrf_protection.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Verify CSRF token before processing
+    if (!isset($_POST['csrf_token']) || !CSRFProtection::verifyToken($_POST['csrf_token'])) {
+        die("CSRF attack detected!");
+    }
+    // Process transfer...
+}
+
+// Generate token for form
+$csrf_token = CSRFProtection::generateToken();
+```
+
+### 3. Form Implementation
+```html
+<form method="POST">
+    <!-- Hidden CSRF token field -->
+    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token) ?>">
+    <!-- Rest of form fields -->
+</form>
+```
+
+## Key Security Features
+- Cryptographically secure token generation
+- Strict token validation
+- Server-side verification
+- Protection against timing attacks using hash_equals()
+- Token regeneration after use
+
+## Files to Check
+1. `csrf_protection.php` - Core security implementation
+2. `secure_transfer.php` - Protected transfer page
+3. `transfer.php` - Vulnerable version for comparison
+
+## Testing
+1. Access vulnerable transfer page - shows CSRF attack succeeds
+2. Access secure transfer page - shows CSRF attack blocked
+3. Compare both implementations to understand protection mechanism
