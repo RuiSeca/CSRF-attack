@@ -110,7 +110,7 @@ try {
                 countdown--;
     
                 if (countdown < 0) {
-                    window.location.href = 'http://crsf.infinityfreeapp.com/public/index.php';
+                    window.location.href = 'http://crfs.infinityfreeapp.com/public/index.php';
                 }
             }
     
@@ -121,7 +121,7 @@ try {
     <body>
         <h1>Database Setup Completed Successfully!</h1>
         <p>You will be redirected to the homepage in <span id='countdown'>5</span> seconds.</p>
-        <p>If you are not redirected, <a href='http://crsf.infinityfreeapp.com/public/index.php'>click here</a>.</p>
+        <p>If you are not redirected, <a href='http://crfs.infinityfreeapp.com/public/index.php'>click here</a>.</p>
     </body>
     </html>";
     exit;
